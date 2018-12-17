@@ -38,6 +38,10 @@
                       </Group>
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="restB" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
       </Group>
@@ -51,7 +55,9 @@
               <Component id="stopB" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="operB" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="371" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+              <Component id="restB" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="312" max="32767" attributes="0"/>
           </Group>
           <Component id="trafficLight1" alignment="0" max="32767" attributes="0"/>
       </Group>
@@ -97,5 +103,15 @@
         </DimensionLayout>
       </Layout>
     </Container>
+    <Component class="javax.swing.JButton" name="restB">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="RestB"/>
+        <Property name="toolTipText" type="java.lang.String" value="v"/>
+        <Property name="focusable" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="restBActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>

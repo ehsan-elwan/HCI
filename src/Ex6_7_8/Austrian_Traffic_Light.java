@@ -7,6 +7,7 @@ package Ex6_7_8;
 
 import java.awt.Color;
 import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JButton;
 
 /**
@@ -21,7 +22,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
     private tLight_Task taskGreenBlinkOn;
     private tLight_Task taskGreenBlinkOff;
     private tLight_Task taskYellow2Red;
-    private tLight_Task taskRed2Red;
+    public static tLight_Task taskRed2Red;
     private tLight_Task blinkOn;
     private tLight_Task blinkOff;
     private boolean blink;
@@ -39,12 +40,13 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
      */
     public Austrian_Traffic_Light() {
         initComponents();
+        restB.setVisible(false);
         btn = new JButton[]{startB, stopB, operB};
         blink = false;
         trafficLight1.setRedlight(initColor);
         trafficLight1.setGreenlight(initColor);
         trafficLight1.setYellowlight(initColor);
-        this.setButtons(btn, btnInitState);
+        setButtons(btn, btnInitState);
         timer = new Timer();
 
         blinkOn = new tLight_Task(initColor, Color.YELLOW, initColor, trafficLight1);
@@ -52,17 +54,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         blinkOn.setNextTask(blinkOff, 500);
         blinkOff.setNextTask(blinkOn, 500);
 
-        taskGreenBlinkOn = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
-        taskGreenBlinkOff = new tLight_Task(initColor, initColor, initColor, trafficLight1);
-        taskYellow2Red = new tLight_Task(Color.RED, initColor, initColor, trafficLight1);
-        taskRed2Green = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
-        taskRed2Red = new tLight_Task(Color.RED, Color.YELLOW, initColor, trafficLight1);
-
-        taskGreenBlinkOn.setNextTask(taskGreenBlinkOff, 1000);
-        taskGreenBlinkOff.setNextTask(taskGreenBlinkOn, 1000);
-        taskYellow2Red.setNextTask(taskRed2Red, 2000);
-        taskRed2Red.setNextTask(taskRed2Green, 1000);
-        taskRed2Green.setNextTask(taskGreenBlinkOn, 4000);
+        initTasks();
 
     }
 
@@ -79,6 +71,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         stopB = new javax.swing.JButton();
         operB = new javax.swing.JButton();
         trafficLight1 = new Ex6_7_8.trafficLight();
+        restB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,6 +107,15 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        restB.setText("RestB");
+        restB.setToolTipText("v");
+        restB.setFocusable(false);
+        restB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -129,7 +131,10 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(stopB)
                             .addComponent(startB))
-                        .addGap(31, 31, 31))))
+                        .addGap(31, 31, 31))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(restB)
+                        .addGap(33, 33, 33))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,7 +145,9 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
                 .addComponent(stopB)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(operB)
-                .addContainerGap(371, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(restB)
+                .addContainerGap(312, Short.MAX_VALUE))
             .addComponent(trafficLight1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -160,19 +167,16 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         trafficLight1.repaint();
         timer = new Timer();
 
-        taskGreenBlinkOn = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
-        taskGreenBlinkOff = new tLight_Task(initColor, initColor, initColor, trafficLight1);
-        taskYellow2Red = new tLight_Task(Color.RED, initColor, initColor, trafficLight1);
-        taskRed2Green = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
-        taskRed2Red = new tLight_Task(Color.RED, Color.YELLOW, initColor, trafficLight1);
-
-        taskGreenBlinkOn.setNextTask(taskGreenBlinkOff, 1000);
-        taskGreenBlinkOff.setNextTask(taskGreenBlinkOn, 1000);
-        taskYellow2Red.setNextTask(taskRed2Red, 2000);
-        taskRed2Red.setNextTask(taskRed2Green, 1000);
-        taskRed2Green.setNextTask(taskGreenBlinkOn, 4000);
+        initTasks();
 
         timer.schedule(taskRed2Red, 3000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                restB.doClick();
+            }
+
+        }, 11500);
 
 
     }//GEN-LAST:event_startBActionPerformed
@@ -184,13 +188,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         trafficLight1.setRedlight(initColor);
         trafficLight1.setGreenlight(initColor);
         trafficLight1.setYellowlight(initColor);
-        taskRed2Green.cancelNextTask();
-        taskGreenBlinkOn.cancelNextTask();
-        taskGreenBlinkOff.cancelNextTask();
-        taskYellow2Red.cancelNextTask();
-        taskRed2Red.cancelNextTask();
-        blinkOff.cancelNextTask();
-        blinkOn.cancelNextTask();
+        cancelTasks();
         timer.cancel();
         trafficLight1.repaint();
 
@@ -211,6 +209,30 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         timer.schedule(blinkOn, 500);
 
     }//GEN-LAST:event_operBActionPerformed
+
+    private void restBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restBActionPerformed
+        // TODO add your handling code here:
+
+        cancelTasks();
+        timer.cancel();
+        trafficLight1.setRedlight(Color.RED);
+        trafficLight1.setGreenlight(initColor);
+        trafficLight1.setYellowlight(initColor);
+        trafficLight1.repaint();
+        timer = new Timer();
+
+        initTasks();
+
+        timer.schedule(taskRed2Red, 3000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                restB.doClick();
+            }
+
+        }, 11500);
+
+    }//GEN-LAST:event_restBActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,7 +272,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         });
     }
 
-    public void setButtons(JButton[] btn, boolean[] btnState) {
+    public final void setButtons(JButton[] btn, boolean[] btnState) {
         for (int i = 0; i < btn.length; i++) {
             btn[i].setEnabled(btnState[i]);
             btn[i].setFocusable(btnState[i]);
@@ -258,8 +280,34 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         }
     }
 
+    public void initTasks() {
+        taskGreenBlinkOn = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
+        taskGreenBlinkOff = new tLight_Task(initColor, initColor, initColor, trafficLight1);
+        taskYellow2Red = new tLight_Task(Color.RED, initColor, initColor, trafficLight1);
+        taskRed2Green = new tLight_Task(initColor, initColor, Color.GREEN, trafficLight1);
+        taskRed2Red = new tLight_Task(Color.RED, Color.YELLOW, initColor, trafficLight1);
+
+        taskGreenBlinkOn.setNextTask(taskGreenBlinkOff, 500);
+        taskGreenBlinkOff.setNextTask(taskGreenBlinkOn, 500);
+        taskYellow2Red.setNextTask(taskRed2Red, 2000);
+        taskRed2Red.setNextTask(taskRed2Green, 1000);
+        taskRed2Green.setNextTask(taskGreenBlinkOn, 4000);
+
+    }
+
+    public void cancelTasks() {
+        taskRed2Green.cancelNextTask();
+        taskGreenBlinkOn.cancelNextTask();
+        taskGreenBlinkOff.cancelNextTask();
+        taskYellow2Red.cancelNextTask();
+        taskRed2Red.cancelNextTask();
+        blinkOff.cancelNextTask();
+        blinkOn.cancelNextTask();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton operB;
+    private javax.swing.JButton restB;
     private javax.swing.JButton startB;
     private javax.swing.JButton stopB;
     private Ex6_7_8.trafficLight trafficLight1;
