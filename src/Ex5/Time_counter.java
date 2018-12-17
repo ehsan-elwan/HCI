@@ -23,9 +23,7 @@ public final class Time_counter extends javax.swing.JFrame {
     
     private final boolean[] btnInitState = new boolean[]{true, false, false, false};
     private final boolean[] btn1State = new boolean[]{false, true, true, false};
-    private final boolean[] btn2State = new boolean[]{true, false, false, false};
     private final boolean[] btn4State = new boolean[]{false, true, false, true};
-    private final boolean[] btn5State = new boolean[]{false, true, true, false};
     
     
 
@@ -158,7 +156,7 @@ public final class Time_counter extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         counter = 0;
-        setButtons(btn, btn2State);
+        setButtons(btn, btnInitState);
         task.cancel();
         countLabel.setText("Pouf...");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -172,7 +170,7 @@ public final class Time_counter extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         state = 1;
-        setButtons(btn, btn5State);
+        setButtons(btn, btn1State);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

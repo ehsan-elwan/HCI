@@ -6,8 +6,8 @@
 package Ex6_7_8;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.Timer;
+import javax.swing.JButton;
 
 /**
  *
@@ -25,33 +25,26 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
     private tLight_Task blinkOn;
     private tLight_Task blinkOff;
     private boolean blink;
+    private final JButton[] btn;
+    private final boolean[] btnInitState = new boolean[]{true, false, false};
+    private final boolean[] btnStart = new boolean[]{false, true, true};
+    private final boolean[] btnOpt = new boolean[]{true, true, false};
 
     /**
      * Creates new form French_Traffic_Light
      *
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param g
-     * @param c
+     *
+     *
+     *
      */
-    public void DrawCircle(int x, int y, int width, int height, Graphics g, Color c) {
-        setVisible(true);
-        g.setColor(c);
-        g.fillOval(x, y, width, height);
-
-    }
-
     public Austrian_Traffic_Light() {
         initComponents();
+        btn = new JButton[]{startB, stopB, operB};
         blink = false;
         trafficLight1.setRedlight(initColor);
         trafficLight1.setGreenlight(initColor);
         trafficLight1.setYellowlight(initColor);
-        startB.setEnabled(true);
-        stopB.setEnabled(false);
-        operB.setEnabled(false);
+        this.setButtons(btn, btnInitState);
         timer = new Timer();
 
         blinkOn = new tLight_Task(initColor, Color.YELLOW, initColor, trafficLight1);
@@ -114,7 +107,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         trafficLight1.setLayout(trafficLight1Layout);
         trafficLight1Layout.setHorizontalGroup(
             trafficLight1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGap(0, 247, Short.MAX_VALUE)
         );
         trafficLight1Layout.setVerticalGroup(
             trafficLight1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,7 +120,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(trafficLight1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(operB)
@@ -160,9 +153,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
             stopB.doClick();
         }
 
-        startB.setEnabled(false);
-        stopB.setEnabled(true);
-        operB.setEnabled(true);
+        this.setButtons(btn, btnStart);
         trafficLight1.setRedlight(Color.RED);
         trafficLight1.setGreenlight(initColor);
         trafficLight1.setYellowlight(initColor);
@@ -188,9 +179,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
 
     private void stopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopBActionPerformed
         // TODO add your handling code here:
-        startB.setEnabled(true);
-        stopB.setEnabled(false);
-        operB.setEnabled(false);
+        this.setButtons(btn, btnInitState);
         blink = false;
         trafficLight1.setRedlight(initColor);
         trafficLight1.setGreenlight(initColor);
@@ -212,9 +201,7 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
         // TODO add your handling code here:
         stopB.doClick();
         blink = true;
-        startB.setEnabled(true);
-        stopB.setEnabled(true);
-        operB.setEnabled(false);
+        this.setButtons(btn, btnOpt);
         timer = new Timer();
         blinkOn = new tLight_Task(initColor, Color.YELLOW, initColor, trafficLight1);
         blinkOff = new tLight_Task(initColor, initColor, initColor, trafficLight1);
@@ -261,6 +248,14 @@ public class Austrian_Traffic_Light extends javax.swing.JFrame {
                 new Austrian_Traffic_Light().setVisible(true);
             }
         });
+    }
+
+    public void setButtons(JButton[] btn, boolean[] btnState) {
+        for (int i = 0; i < btn.length; i++) {
+            btn[i].setEnabled(btnState[i]);
+            btn[i].setFocusable(btnState[i]);
+
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
